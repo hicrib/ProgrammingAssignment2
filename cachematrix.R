@@ -4,7 +4,7 @@
 ## if no-cached data, it'll solve() for a that's stored in matObj
 ## it doesn't matter if a changes, what's stored in matObj will be used.
 
-## Creates an object that holds a matrix "x" and 4 functions called set,get,setmean,getmean
+## Creates an object that holds a matrix "x" and 4 functions called set,get,setinv,getinv
 ## 
 makeCacheMatrix <- function(x = matrix()) {
 
@@ -14,27 +14,29 @@ makeCacheMatrix <- function(x = matrix()) {
         m <<- NULL
     }
     get <- function() x
-    setmean <- function(mean) {
-		m <<- mean
+    setinv <- function(inv) {
+		m <<- inv
 	}
-    getmean <- function() m
+    getinv <- function() m
     list(set = set, get = get,
-         setmean = setmean,
-         getmean = getmean)
+         setinv = setinv,
+         getinv = getinv
+		)
 }
 
 
 ## returns the inverse of a matrix that is encapsulated in matObj. takes advantage of caching if available
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-		  m <- x$getmean()
-        if(!is.null(m)) {
+		m <- x$getinv()
+        
+		if(!is.null(m)) {
                 message("getting cached data")
                 return(m)
         }
 		message("uncached-> solving")
         data <- x$get()
         m <- solve(data, ...)
-        x$setmean(m)
+        x$setinv(m)
         m
 }
