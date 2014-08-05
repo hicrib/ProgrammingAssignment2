@@ -15,26 +15,26 @@ makeCacheMatrix <- function(x = matrix()) {
     }
     get <- function() x
     setinv <- function(inv) {
-		m <<- inv
-	}
+        m <<- inv
+    }
     getinv <- function() m
     list(set = set, get = get,
          setinv = setinv,
          getinv = getinv
-		)
+        )
 }
 
 
 ## returns the inverse of a matrix that is encapsulated in matObj. takes advantage of caching if available
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-		m <- x$getinv()
+        m <- x$getinv()
         
-		if(!is.null(m)) {
+        if(!is.null(m)) {
                 message("getting cached data")
                 return(m)
         }
-		message("uncached-> solving")
+        message("uncached-> solving")
         data <- x$get()
         m <- solve(data, ...)
         x$setinv(m)
